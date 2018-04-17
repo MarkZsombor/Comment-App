@@ -12,6 +12,11 @@ const port = process.env.API_PORT || 3001
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
+const mongoDB = 'mongodb://mark:mark@ds247699.mlab.com:47699/mzcommentapp'
+mongoose.connect(mongoDB)
+const db = mongoose.connection
+db.on('error', console.error.bind(console, 'MongoDB connection error:'))
+
 //Deal with CORS
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
