@@ -32,6 +32,27 @@ router.get('/', (req, res) => {
   res.json({ message: 'API Initialized!' })
 })
 
+router.route('/comments')
+  .get((req, res) => {
+    Comment.find((err, comments) => {
+      if(err) {
+        res.send(err)
+      }
+      res.json(comments)
+    })
+  })
+  .post((req, res) => {
+    const comment = new Comment()
+    comment.author = req.body.author
+    comment.text = req.body.text
+    comment.save(err => {
+      if(err) {
+        res.send(err)
+      }
+      res.json({ message: "Comment Added" })
+    })
+  })
+
 app.use('/api', router)
 
 app.listen(port, () => {
