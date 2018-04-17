@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
-import DATA from './data';
 import style from './style';
 
 class CommentBox extends Component {
@@ -9,11 +9,24 @@ class CommentBox extends Component {
     super(props);
     this.state = { data: [] };
   }
+  loadCommentsFromServer = () => {
+    axios.get(this.props.url)
+      .then(res => {
+        this.setState({ data: res.data })
+      })
+  }
+  handleCommentSubmit = (comment) => {
+    //add post info
+  }
+  componentDidMount() {
+    this.loadCommentsFromServer();
+    setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+  }
   render() {
     return (
       <div style={ style.commentBox }>
         <h2>Comments</h2>
-        <CommentList data={ DATA } />
+        <CommentList data={ this.state.data } />
         <CommentForm />
       </div>
     );
