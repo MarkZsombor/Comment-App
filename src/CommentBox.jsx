@@ -8,15 +8,28 @@ class CommentBox extends Component {
   constructor(props) {
     super(props);
     this.state = { data: [] };
+    this.loadCommentsFromServer = this.loadCommentsFromServer.bind(this);
+    this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
   }
-  loadCommentsFromServer = () => {
+  loadCommentsFromServer() {
     axios.get(this.props.url)
       .then(res => {
         this.setState({ data: res.data })
       })
   }
-  handleCommentSubmit = (comment) => {
-    //add post info
+  handleCommentSubmit(comment) {
+    let comments = this.state.data;
+    comment._id = Date.now();
+    let newComments = comments.concat([comment]);
+    this.setState({ data: newComments });
+    axios.post(this.props.url, comment)
+      .then(res => {
+        this.loadCommentsFromServer();
+      })
+      .catch(err => {
+        console.error(err);
+        this.setState({ data: comments });
+      });
   }
   componentDidMount() {
     this.loadCommentsFromServer();
@@ -27,7 +40,7 @@ class CommentBox extends Component {
       <div style={ style.commentBox }>
         <h2>Comments</h2>
         <CommentList data={ this.state.data } />
-        <CommentForm />
+        <CommentForm onCommentSubmit={ this.handleCommentSubmit }/>
       </div>
     );
   }
