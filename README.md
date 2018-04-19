@@ -1,7 +1,9 @@
 # Comment App
 
-A CRUD app that acts as a component to a larger app, which deals with comments.
+A CRUD app that acts as a component to a larger app, which deals with user comments.
 
-Will use React/Express/MongoDB (REM stack?)
+Users can leave comments, update and delete comments.
 
-TODO: Finish App
+Uses a React/Express/MongoDB.
+
+TODO: Add some testing
