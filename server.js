@@ -59,8 +59,8 @@ router.route('/comments/:comment_id')
       if(err) {
         res.send(err)
       }
-      (req.body.author) ? comment.author = req.body.author : null
-      (req.body.text) ? comment.text = req.body.text : null
+      req.body.author ? comment.author = req.body.author : null
+      req.body.text ? comment.text = req.body.text : null
       comment.save(err => {
         if(err) {
           res.send(err)
